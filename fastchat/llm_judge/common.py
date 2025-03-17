@@ -165,7 +165,7 @@ def run_judge_single(question, answer, judge, ref_answer, multi_turn=False):
 
     if model in OPENAI_MODEL_LIST:
         judgment = chat_completion_openai(model, conv, temperature=0, max_tokens=2048)
-    elif model in {"Qwen2.5-0.5B-Instruct", "Llama-3.3-70B-Instruct"}:
+    elif model in {"Qwen2.5-0.5B-Instruct", "Llama-3.3-70B-Instruct", "Llama-3.2-1B-Instruct"}:
         if "Qwen" in model:
             vllm_model_name = "Qwen/" + model
         elif "Llama" in model:
