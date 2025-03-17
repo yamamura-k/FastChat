@@ -165,6 +165,13 @@ def run_judge_single(question, answer, judge, ref_answer, multi_turn=False):
 
     if model in OPENAI_MODEL_LIST:
         judgment = chat_completion_openai(model, conv, temperature=0, max_tokens=2048)
+    elif model in {"Qwen2.5-0.5B-Instruct", "Llama-3.3-70B-Instruct"}:
+        if "Qwen" in model:
+            vllm_model_name = "Qwen/" + model
+        elif "Llama" in model:
+            vllm_model_name = "meta-llama/" + model
+        openai.api_base = "http://localhost:8000/v1"
+        judgment = chat_completion_openai(vllm_model_name, conv, temperature=0, max_tokens=2048)
     elif model in ANTHROPIC_MODEL_LIST:
         judgment = chat_completion_anthropic(
             model, conv, temperature=0, max_tokens=1024
