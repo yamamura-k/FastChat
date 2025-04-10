@@ -4,7 +4,8 @@ python3 show_result.py --mode [single|pairwise-baseline|pairwise-all]
 """
 import argparse
 import pandas as pd
-
+pd.set_option('display.max_colwidth', None)
+pd.set_option('display.width', 1000)  # 表示幅を広く設定（必要に応じて）
 
 def display_result_single(args):
     if args.input_file is None:

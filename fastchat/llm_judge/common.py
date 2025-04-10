@@ -276,6 +276,14 @@ def run_judge_pair(question, answer_a, answer_b, judge, ref_answer, multi_turn=F
     if model in OPENAI_MODEL_LIST:
         conv.set_system_message(system_prompt)
         judgment = chat_completion_openai(model, conv, temperature=0, max_tokens=2048)
+    elif model in {"Qwen2.5-0.5B-Instruct", "Llama-3.1-70B-Instruct", "Llama-3.3-70B-Instruct", "Llama-3.2-1B-Instruct"}:
+        if "Qwen" in model:
+            vllm_model_name = "Qwen/" + model
+        elif "Llama" in model:
+            vllm_model_name = "meta-llama/" + model
+        openai.api_base = "http://localhost:8000/v1"
+        conv.set_system_message(system_prompt)
+        judgment = chat_completion_openai(vllm_model_name, conv, temperature=0, max_tokens=2048)
     elif model in ANTHROPIC_MODEL_LIST:
         if system_prompt != "You are a helpful assistant.":
             user_prompt = "[Instruction]\n" + system_prompt + "\n\n" + user_prompt
